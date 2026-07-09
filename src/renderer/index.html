@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Posta Massiva - Ordinamento e Chiudi Scatola</title>
+    <title>Posta Massiva - Ordinamento, Plichi e Bancali</title>
     <style>
       :root {
         --bg: #f2f4ef;
@@ -175,7 +175,7 @@
       .output-actions {
         margin-top: 10px;
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
         gap: 10px;
       }
 
@@ -192,7 +192,7 @@
   <body>
     <div class="container">
       <div class="title-card">
-        <h1>Posta Massiva - Ordinatore e Chiudi Scatola</h1>
+        <h1>Posta Massiva - Ordinatore, Plichi e Bancali</h1>
         <p class="subtitle">Elabora Excel in base ai manuali presenti in <code>docs</code> e genera file di output pronti.</p>
       </div>
 
@@ -233,43 +233,15 @@
               <select id="capColumn"></select>
             </div>
             <div>
-              <label for="elementsColumn">Colonna Numero Elementi (1-7)</label>
-              <select id="elementsColumn"></select>
-              <div class="hint">Se impostata, peso e spessore busta vengono calcolati in automatico.</div>
-            </div>
-          </div>
-
-          <div class="fields-2" style="margin-top:10px;">
-            <div>
-              <label for="formatColumn">Colonna Formato (opzionale)</label>
-              <select id="formatColumn"></select>
-            </div>
-            <div>
-              <label for="weightColumn">Colonna Peso Unitario (opzionale)</label>
-              <select id="weightColumn"></select>
-            </div>
-          </div>
-
-          <div class="fields-3" style="margin-top:10px;">
-            <div>
-              <label for="boxHeightCm">Altezza utile scatola (cm)</label>
-              <input id="boxHeightCm" type="number" value="46" min="1" step="0.1" />
-            </div>
-            <div>
-              <label for="boxReaction">Coefficiente reazione scatola</label>
-              <input id="boxReaction" type="number" value="1" min="0.01" step="0.01" />
-              <div class="hint">Formula: floor((altezza mm x coefficiente) / spessore busta).</div>
-            </div>
-            <div>
-              <label for="boxCapacity">Limite massimo invii per scatola</label>
+              <label for="boxCapacity">Limite massimo invii per plico</label>
               <input id="boxCapacity" type="number" value="500" min="1" />
-              <div class="hint">Cap massimo applicato oltre al calcolo automatico da spessore/peso.</div>
+              <div class="hint">Cap massimo record per singolo plico.</div>
             </div>
           </div>
         </section>
 
         <section class="card">
-          <h2>2) Dati Etichetta Chiudi Scatola</h2>
+          <h2>2) Dati Etichetta Plichi</h2>
 
           <div class="fields-3">
             <div>
@@ -284,7 +256,7 @@
               </select>
             </div>
             <div>
-              <label for="boxTare">Tara scatola</label>
+              <label for="boxTare">Tara plico (grammi)</label>
               <input id="boxTare" type="number" value="203" min="0" step="0.01" />
             </div>
           </div>
@@ -309,22 +281,24 @@
               <label for="productCode">Prodotto (cod. materiale)</label>
               <input id="productCode" type="text" />
             </div>
-            <div>
-              <label for="defaultFormat">Formato di default</label>
-              <select id="defaultFormat">
-                <option value="">-- seleziona formato --</option>
-                <option value="P">Formato P &ndash; Resistenza a Flessione</option>
-                <option value="M">Formato M &ndash; Rigidit&agrave; a Flessione</option>
-              </select>
-              <div class="hint">Usato se colonna Formato vuota.</div>
-            </div>
           </div>
 
           <div class="fields-2" style="margin-top:10px;">
             <div>
               <label for="defaultWeight">Peso unitario di default (grammi)</label>
-              <input id="defaultWeight" type="text" placeholder="Usato se colonna Peso vuota" />
+              <input id="defaultWeight" type="text" placeholder="Obbligatorio per tutti i record" />
             </div>
+            <div>
+              <label for="minBancaleWeight">Peso minimo bancale (kg)</label>
+              <input id="minBancaleWeight" type="number" value="200" min="1" step="1" />
+            </div>
+            <div>
+              <label for="maxBancaleWeight">Peso massimo bancale (kg)</label>
+              <input id="maxBancaleWeight" type="number" value="500" min="1" step="1" />
+            </div>
+          </div>
+
+          <div class="fields-2" style="margin-top:10px;">
             <div style="display:flex;align-items:end;">
               <button id="btnProcess" class="primary">Elabora file</button>
             </div>
@@ -338,7 +312,8 @@
           <div id="results" class="results">Nessuna elaborazione eseguita.</div>
           <div class="output-actions">
             <button id="btnOpenSorted" disabled>Apri file record ordinati</button>
-            <button id="btnOpenChiudi" disabled>Apri file chiudi scatola</button>
+            <button id="btnOpenChiudi" disabled>Apri file plichi</button>
+            <button id="btnOpenBancali" disabled>Apri file bancali</button>
           </div>
           <div class="hint">I file vengono salvati in formato .xlsx nella cartella output scelta.</div>
         </section>

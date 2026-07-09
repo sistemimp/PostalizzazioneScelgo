@@ -14,11 +14,13 @@ function resolveDocsDir() {
 }
 
 function createMainWindow() {
+  const appIconPath = path.resolve(__dirname, '..', 'icon.ico');
   const mainWindow = new BrowserWindow({
     width: 1100,
     height: 860,
     minWidth: 960,
     minHeight: 720,
+    icon: appIconPath,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,

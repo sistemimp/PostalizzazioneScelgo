@@ -4,7 +4,8 @@ Applicazione desktop Electron per:
 
 - leggere un file Excel di invii;
 - classificare/riordinare i record per `BACINO DESTINAZIONE` e `DESTINAZIONE TARIFFARIA` usando il manuale in `docs/postamassiva-elenco-bacini-destinazione.pdf`;
-- generare un file dedicato alla realizzazione dei **chiudi scatola**.
+- generare un file dedicato alla realizzazione dei **plichi**;
+- generare un file dedicato alla composizione dei **bancali**.
 
 ## Requisiti
 
@@ -22,16 +23,16 @@ npm start
 
 1. Seleziona il file Excel input.
 2. Scegli foglio e colonna CAP.
-3. Se disponibile, seleziona la colonna **Numero Elementi (1-7)** per calcolare in automatico peso e spessore busta.
-4. Imposta **altezza utile scatola** e **coefficiente reazione**: il limite per scatola viene calcolato con `floor((altezza_mm * coefficiente) / spessore_busta_mm)`.
-5. Imposta il **limite massimo invii per scatola** (cap superiore).
-6. Imposta i parametri etichetta/chiudi scatola (azienda, centro, codice spedizione, ecc.).
-7. Premi `Elabora file`.
+3. Imposta il **limite massimo invii per plico**.
+4. Imposta i parametri etichetta plichi (azienda, centro, codice spedizione, ecc.).
+5. Inserisci il **peso unitario di default (grammi)**: viene applicato a tutti i record.
+6. Premi `Elabora file`.
 
 Output generati:
 
 - `*_record_ordinati_YYYYMMDD_HHMMSS.xlsx`
-- `*_chiudi_scatola_YYYYMMDD_HHMMSS.xlsx`
+- `*_plichi_YYYYMMDD_HHMMSS.xlsx`
+- `*_bancali_YYYYMMDD_HHMMSS.xlsx`
 
 ## Fogli output
 
@@ -47,15 +48,32 @@ Contiene i record originali con colonne aggiuntive:
 
 Se ci sono CAP non classificati viene aggiunto il foglio `Scarti_CAP`.
 
-### Chiudi scatola
+### Plichi
 
-Righe pronte per etichette scatola con campi coerenti con il PDF `postamassiva-etichette-scatole-pallet.pdf`.
+Righe pronte per etichette plichi con peso unitario assegnato da interfaccia.
 
-Se presenti, gli scarti CAP vengono comunque inseriti nel file `Chiudi_Scatola` in fondo al flusso, con:
+Se presenti, gli scarti CAP vengono comunque inseriti nel file `Plichi` in fondo al flusso, con:
 
 - `Tipo chiusura = CHIUDI PLICO MIX BACINI DESTINAZIONI VARIE`
 - `BACINO DESTINAZIONE = MIX BACINI DESTINAZIONI VARIE`
 - `Destinazione tariffaria = MIX`
+
+### Bancali
+
+I bancali vengono creati aggregando i plichi secondo lo schema cliente:
+
+- `ANCONA -> ANCONA + PESARO + MACERATA`
+- `ANCONA -> ASCOLI PICENO + FERMO`
+- `PESCARA -> TERAMO`
+- `PESCARA -> PESCARA`
+- `PESCARA -> CHIETI + L'AQUILA + CAMPOBASSO + ISERNIA`
+- residui sotto soglia in `MIX BACINI DESTINAZIONI VARIE`
+
+Vincoli applicati:
+
+- peso massimo bancale configurabile da interfaccia
+- peso minimo bancale configurabile da interfaccia
+- i gruppi sotto minimo vengono riversati nel bancale `MIX`
 
 ## Note implementative
 

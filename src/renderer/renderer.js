@@ -15,12 +15,7 @@ const els = {
   outputDir: document.getElementById('outputDir'),
   sheetName: document.getElementById('sheetName'),
   capColumn: document.getElementById('capColumn'),
-  elementsColumn: document.getElementById('elementsColumn'),
-  formatColumn: document.getElementById('formatColumn'),
-  weightColumn: document.getElementById('weightColumn'),
   boxCapacity: document.getElementById('boxCapacity'),
-  boxHeightCm: document.getElementById('boxHeightCm'),
-  boxReaction: document.getElementById('boxReaction'),
   postingDate: document.getElementById('postingDate'),
   productHomologated: document.getElementById('productHomologated'),
   boxTare: document.getElementById('boxTare'),
@@ -28,15 +23,17 @@ const els = {
   center: document.getElementById('center'),
   shippingCode: document.getElementById('shippingCode'),
   productCode: document.getElementById('productCode'),
-  defaultFormat: document.getElementById('defaultFormat'),
   defaultWeight: document.getElementById('defaultWeight'),
+  minBancaleWeight: document.getElementById('minBancaleWeight'),
+  maxBancaleWeight: document.getElementById('maxBancaleWeight'),
   status: document.getElementById('status'),
   results: document.getElementById('results'),
   btnInput: document.getElementById('btnInput'),
   btnOutput: document.getElementById('btnOutput'),
   btnProcess: document.getElementById('btnProcess'),
   btnOpenSorted: document.getElementById('btnOpenSorted'),
-  btnOpenChiudi: document.getElementById('btnOpenChiudi')
+  btnOpenChiudi: document.getElementById('btnOpenChiudi'),
+  btnOpenBancali: document.getElementById('btnOpenBancali')
 };
 
 function dirname(filePath) {
@@ -112,29 +109,11 @@ function updateColumnSelectors() {
   const headers = sheetInfo ? sheetInfo.headers : [];
 
   fillSelect(els.capColumn, headers, false);
-  fillSelect(els.elementsColumn, headers, true);
-  fillSelect(els.formatColumn, headers, true);
-  fillSelect(els.weightColumn, headers, true);
 
   const capDetected = detectHeader(headers, ['cap', 'capdest', 'cap_dest']);
-  const elementsDetected = detectHeader(headers, ['element', 'fogli', 'num elementi', 'num_elementi', 'n_elementi']);
-  const formatDetected = detectHeader(headers, ['formato', 'format']);
-  const weightDetected = detectHeader(headers, ['peso', 'gram', 'weight']);
 
   if (capDetected) {
     els.capColumn.value = capDetected;
-  }
-
-  if (formatDetected) {
-    els.formatColumn.value = formatDetected;
-  }
-
-  if (elementsDetected) {
-    els.elementsColumn.value = elementsDetected;
-  }
-
-  if (weightDetected) {
-    els.weightColumn.value = weightDetected;
   }
 }
 
@@ -151,20 +130,18 @@ function renderResult(result) {
     `Record totali: ${result.totalRows}`,
     `Record classificati: ${result.matchedRows}`,
     `Record non classificati: ${result.unmatchedRows}`,
-    `Scatole generate: ${result.totalBoxes}`,
-    `Scatole standard: ${result.standardBoxes ?? 0}`,
-    `Scatole parziali: ${result.partialBoxes ?? 0}`,
-    `Scatole MIX: ${result.mixBoxes ?? 0}`,
-    `Modalità capienza scatola: ${
-      result.capacityMode === 'ELEMENTI_AUTOMATICO'
-        ? `automatica da elementi (h=${result.boxHeightCm}cm, coeff=${result.boxReaction})`
-        : 'manuale'
-    }`,
-    `Limite massimo invii per scatola: ${result.boxCapacity}`,
+    `Plichi generati: ${result.totalPlichi}`,
+    `Plichi MIX: ${result.mixPlichi ?? 0}`,
+    `Limite massimo record per plico: ${result.boxCapacity}`,
+    `Bancali generati: ${result.totalBancali ?? 0}`,
+    `Bancali MIX: ${result.mixBancali ?? 0}`,
+    `Peso minimo bancale: ${result.minBancaleWeightKg ?? ''} kg`,
+    `Peso massimo bancale: ${result.maxBancaleWeightKg ?? ''} kg`,
     `Regole CAP caricate da manuale: ${result.rulesCount}`,
     warningsBlock,
     `\nOutput record ordinati: ${result.sortedOutputPath}`,
-    `Output chiudi scatola: ${result.chiudiOutputPath}`
+    `Output plichi: ${result.chiudiOutputPath}`,
+    `Output bancali: ${result.bancaliOutputPath}`
   ].join('\n');
 }
 
@@ -203,7 +180,7 @@ async function applyInputFile(filePath) {
   }
 
   await loadWorkbookInfo(filePath);
-  setStatus('File caricato. Verifica mappatura colonne e avvia l\'elaborazione.', 'ok');
+  setStatus('File caricato. Verifica CAP e avvia l\'elaborazione.', 'ok');
 }
 
 els.sheetName.addEventListener('change', updateColumnSelectors);
@@ -291,17 +268,32 @@ els.btnProcess.addEventListener('click', async () => {
     return;
   }
 
+  if (!String(els.defaultWeight.value || '').trim()) {
+    setStatus('Inserisci il peso unitario di default in grammi.', 'error');
+    return;
+  }
+
+  if (!String(els.maxBancaleWeight.value || '').trim()) {
+    setStatus('Inserisci il peso massimo bancale in kg.', 'error');
+    return;
+  }
+
+  if (!String(els.minBancaleWeight.value || '').trim()) {
+    setStatus('Inserisci il peso minimo bancale in kg.', 'error');
+    return;
+  }
+
+  if (Number(els.minBancaleWeight.value) > Number(els.maxBancaleWeight.value)) {
+    setStatus('Il peso minimo bancale non puo superare il massimo.', 'error');
+    return;
+  }
+
   const options = {
     inputPath: state.inputPath,
     outputDir: els.outputDir.value || dirname(state.inputPath),
     sheetName: els.sheetName.value,
     capColumn: els.capColumn.value,
-    elementsColumn: els.elementsColumn.value || '',
-    formatColumn: els.formatColumn.value || '',
-    weightColumn: els.weightColumn.value || '',
     boxCapacity: els.boxCapacity.value,
-    boxHeightCm: els.boxHeightCm.value,
-    boxReaction: els.boxReaction.value,
     postingDate: els.postingDate.value,
     productHomologated: els.productHomologated.value,
     boxTare: els.boxTare.value,
@@ -309,8 +301,9 @@ els.btnProcess.addEventListener('click', async () => {
     center: els.center.value,
     shippingCode: els.shippingCode.value,
     productCode: els.productCode.value,
-    defaultFormat: els.defaultFormat.value,
-    defaultWeight: els.defaultWeight.value
+    defaultWeight: els.defaultWeight.value,
+    minBancaleWeight: els.minBancaleWeight.value,
+    maxBancaleWeight: els.maxBancaleWeight.value
   };
 
   try {
@@ -325,6 +318,7 @@ els.btnProcess.addEventListener('click', async () => {
 
     els.btnOpenSorted.disabled = false;
     els.btnOpenChiudi.disabled = false;
+    els.btnOpenBancali.disabled = false;
   } catch (error) {
     setStatus(`Errore elaborazione: ${error.message}`, 'error');
   } finally {
@@ -344,4 +338,11 @@ els.btnOpenChiudi.addEventListener('click', async () => {
     return;
   }
   await api.openPath(state.lastResult.chiudiOutputPath);
+});
+
+els.btnOpenBancali.addEventListener('click', async () => {
+  if (!state.lastResult) {
+    return;
+  }
+  await api.openPath(state.lastResult.bancaliOutputPath);
 });
