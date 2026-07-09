@@ -1,0 +1,21 @@
+{
+  "name": "postalizzazione Scelgo",
+  "version": "1.0.0",
+  "description": "Tool Electron per ordinare record per elaborazione customizzata per il cliente Scelgo",
+  "main": "src/main.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "Alex Olivieri",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "electron": "^41.0.4",
+    "pdf-parse": "^2.4.5",
+    "xlsx": "^0.18.5"
+  }
+}

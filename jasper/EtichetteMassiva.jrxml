@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final utlizzo versione della libreria JasperReports6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="595" pageHeight="252" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="8e6333b1-6bb8-44d2-90a1-4e73d8d62cee">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="excel"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="Data di Impostazione (gg/mm/aaaa)" class="java.lang.String"/>
+	<field name="Progressivo chiudi scatola" class="java.lang.String"/>
+	<field name="Azienda Speditrice (ID SAP + Nome Cliente)" class="java.lang.String"/>
+	<field name="Centro di Impostazione (AGE + Nome Centro)" class="java.lang.String"/>
+	<field name="Tipo chiusura" class="java.lang.String"/>
+	<field name="CODICE SPEDIZIONE" class="java.lang.String"/>
+	<field name="Prodotto (Cod. Materiale)" class="java.lang.String"/>
+	<field name="Prodotto Omologato (SI/NO)" class="java.lang.String"/>
+	<field name="Formato" class="java.lang.String"/>
+	<field name="Destinazione tariffaria" class="java.lang.String"/>
+	<field name="Numero elementi per busta" class="java.lang.String"/>
+	<field name="Peso unitario (in grammi)" class="java.lang.String"/>
+	<field name="Spessore busta (mm)" class="java.lang.String"/>
+	<field name="Scatola riempita parzialmente (SI/NO)" class="java.lang.String"/>
+	<field name="Tara scatola" class="java.lang.String"/>
+	<field name="Numero invii totale scatola" class="java.lang.String"/>
+	<field name="Range lettere contenute" class="java.lang.String"/>
+	<field name="Peso netto invii scatola (kg)" class="java.lang.String"/>
+	<field name="Peso totale scatola (kg)" class="java.lang.String"/>
+	<field name="Provincia bacino" class="java.lang.String"/>
+	<field name="BACINO DESTINAZIONE" class="java.lang.String"/>
+	<field name="Numero scatola nel gruppo" class="java.lang.String"/>
+	<field name="Totale scatole nel gruppo" class="java.lang.String"/>
+	<detail>
+		<band height="248" splitType="Stretch">
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="0" y="10" width="595" height="234" uuid="40f79265-7ae2-40d3-8f48-9648f8d98025"/>
+				<imageExpression><![CDATA["etichette_page1.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="54" y="51" width="108" height="28" uuid="aff6d0ed-8476-4a55-b644-3a670b487cab"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{CODICE SPEDIZIONE}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="324" y="60" width="96" height="20" uuid="244876e7-202f-4e7e-8e45-561afa2f5f4a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Centro di Impostazione (AGE + Nome Centro)}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="235" y="60" width="84" height="20" uuid="c95c58cd-8d62-4f1f-a339-26c655bce3db"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Azienda Speditrice (ID SAP + Nome Cliente)}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="430" y="60" width="106" height="20" uuid="ca258a5f-1828-474b-a546-0a4eeb586fbb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Data di Impostazione (gg/mm/aaaa)}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="430" y="84" width="106" height="14" uuid="7e86e30c-74f6-4843-b4cb-a7cf7b2ab558"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Peso unitario (in grammi)}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="430" y="106" width="106" height="14" uuid="35770ba6-8fb6-4277-a9c2-797471595a65"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Numero invii totale scatola}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="165" y="186" width="372" height="22" uuid="54334c87-1f8d-4e5b-ae92-6d41a8d1803d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{BACINO DESTINAZIONE}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="165" y="214" width="371" height="22" uuid="dbeca1fa-d69e-4347-bcd8-0645ed3f2934"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Provincia bacino}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="168" y="128" width="57" height="11" uuid="2b861c90-7528-43db-abea-c5ec41fee41d">
+					<printWhenExpression><![CDATA[$F{Formato} != null && $F{Formato}.equals("P")]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="170" y="128" width="57" height="11" uuid="9f0aae49-ab92-4dad-9efe-59f019bf2799">
+					<printWhenExpression><![CDATA[$F{Formato} != null && $F{Formato}.equals("P")]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="235" y="128" width="57" height="11" uuid="eaaf4868-b6b0-443b-b358-52c891980a9d">
+					<printWhenExpression><![CDATA[$F{Formato} != null && $F{Formato}.equals("M")]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="235" y="128" width="57" height="11" uuid="1e0e4bbe-1f39-4790-87a6-556790ecfaa6">
+					<printWhenExpression><![CDATA[$F{Formato} != null && $F{Formato}.equals("M")]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="166" y="149" width="37" height="11" uuid="06c4bc42-5e3f-4839-be0c-1dfcd946719f">
+					<printWhenExpression><![CDATA[$F{Destinazione tariffaria}!= null && $F{Destinazione tariffaria}.equals("AM")]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="168" y="150" width="37" height="11" uuid="3b57719a-f73a-4d0a-9665-cd2c7528742c">
+					<printWhenExpression><![CDATA[$F{Destinazione tariffaria}!= null && $F{Destinazione tariffaria}.equals("AM")]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="215" y="149" width="33" height="11" uuid="b699d769-0e3a-4ae5-88a6-137d4c9e70ee">
+					<printWhenExpression><![CDATA[$F{Destinazione tariffaria}!= null && $F{Destinazione tariffaria}.equals("CP")]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="215" y="148" width="33" height="11" uuid="f7408cef-cb67-4060-a013-020fcc8d2dd0">
+					<printWhenExpression><![CDATA[$F{Destinazione tariffaria}!= null && $F{Destinazione tariffaria}.equals("CP")]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="258" y="149" width="33" height="11" uuid="b7a4443c-ea59-40bf-8351-d844efe69999">
+					<printWhenExpression><![CDATA[$F{Destinazione tariffaria}!= null && $F{Destinazione tariffaria}.equals("EU")]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="258" y="150" width="33" height="11" uuid="37005f14-7545-4d96-ac04-1cc1c39fa370">
+					<printWhenExpression><![CDATA[$F{Destinazione tariffaria}!= null && $F{Destinazione tariffaria}.equals("EU")]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="440" y="128" width="33" height="11" uuid="43c49360-0b7a-418d-b0a3-ad81a1602950">
+					<printWhenExpression><![CDATA[$F{Scatola riempita parzialmente (SI/NO)}!= null && $F{Scatola riempita parzialmente (SI/NO)}.equals("SI")]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="440" y="128" width="33" height="11" uuid="ec459846-1a59-4e06-8a61-4fad78646bc6">
+					<printWhenExpression><![CDATA[$F{Scatola riempita parzialmente (SI/NO)}!= null && $F{Scatola riempita parzialmente (SI/NO)}.equals("SI")]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="491" y="128" width="33" height="11" uuid="ae8f69f3-a3a6-4a42-90e0-4fe9b711ff4c">
+					<printWhenExpression><![CDATA[$F{Scatola riempita parzialmente (SI/NO)}!= null && $F{Scatola riempita parzialmente (SI/NO)}.equals("NO")]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="491" y="128" width="33" height="11" uuid="962f3a33-5526-4a96-ba6f-9b59281481cd">
+					<printWhenExpression><![CDATA[$F{Scatola riempita parzialmente (SI/NO)}!= null && $F{Scatola riempita parzialmente (SI/NO)}.equals("NO")]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="435" y="13" width="106" height="18" uuid="162aaf44-6633-4738-858e-227d528a30a0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["N. "+$F{Progressivo chiudi scatola}+"<br>"+$F{Range lettere contenute}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="170" y="55" width="61" height="24" uuid="d5ddaa23-480e-482a-86f7-c3815e5a779d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Prodotto (Cod. Materiale)}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

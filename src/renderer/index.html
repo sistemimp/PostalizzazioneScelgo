@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Posta Massiva - Ordinamento e Chiudi Scatola</title>
+    <style>
+      :root {
+        --bg: #f2f4ef;
+        --card: #ffffff;
+        --line: #d1d8ca;
+        --text: #1f2a1e;
+        --accent: #2f6f4f;
+        --accent-2: #d0742f;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: 'IBM Plex Sans', 'Segoe UI', Tahoma, sans-serif;
+        background: radial-gradient(circle at top left, #f7faef, #eef2ea 45%, #e7ecdf);
+        color: var(--text);
+      }
+
+      .container {
+        max-width: 1040px;
+        margin: 24px auto 30px;
+        padding: 0 16px;
+      }
+
+      .title-card {
+        background: linear-gradient(140deg, #284e3b, #3a7f5a 72%, #5d9f71);
+        color: #fff;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 10px 30px rgba(29, 50, 39, 0.22);
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 27px;
+        letter-spacing: 0.2px;
+      }
+
+      .subtitle {
+        margin: 10px 0 0;
+        opacity: 0.94;
+      }
+
+      .grid {
+        display: grid;
+        gap: 16px;
+        margin-top: 18px;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 16px;
+      }
+
+      .card h2 {
+        margin: 0 0 12px;
+        font-size: 18px;
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 220px;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .row.single {
+        grid-template-columns: 1fr;
+      }
+
+      .input-dropzone {
+        border: 1px dashed transparent;
+        border-radius: 10px;
+        padding: 8px;
+        margin: -8px;
+        transition: border-color 0.15s ease, background-color 0.15s ease;
+      }
+
+      .input-dropzone.drop-active {
+        border-color: var(--accent);
+        background: rgba(47, 111, 79, 0.08);
+      }
+
+      .fields-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .fields-3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 10px;
+      }
+
+      label {
+        display: block;
+        font-size: 13px;
+        margin-bottom: 4px;
+        color: #334537;
+      }
+
+      input,
+      select,
+      button {
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid #bcc9b8;
+        font-size: 14px;
+        padding: 10px;
+        outline: none;
+      }
+
+      input:focus,
+      select:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(47, 111, 79, 0.12);
+      }
+
+      button {
+        cursor: pointer;
+        background: #fff;
+      }
+
+      button.primary {
+        background: var(--accent);
+        border-color: #2a6045;
+        color: #fff;
+        font-weight: 700;
+      }
+
+      button.secondary {
+        background: #fff8f2;
+        border-color: #e0b58f;
+        color: #8a4e24;
+      }
+
+      .status {
+        margin-top: 10px;
+        min-height: 20px;
+        font-weight: 600;
+      }
+
+      .status.error {
+        color: #a21e1e;
+      }
+
+      .status.ok {
+        color: #1d6f3a;
+      }
+
+      .hint {
+        font-size: 12px;
+        color: #596b59;
+        margin-top: 4px;
+      }
+
+      .results {
+        font-size: 14px;
+        line-height: 1.5;
+        white-space: pre-line;
+      }
+
+      .output-actions {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      @media (max-width: 800px) {
+        .row,
+        .fields-2,
+        .fields-3,
+        .output-actions {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="title-card">
+        <h1>Posta Massiva - Ordinatore e Chiudi Scatola</h1>
+        <p class="subtitle">Elabora Excel in base ai manuali presenti in <code>docs</code> e genera file di output pronti.</p>
+      </div>
+
+      <div class="grid">
+        <section class="card">
+          <h2>1) Input e Mappatura</h2>
+
+          <div class="row">
+            <div id="inputDropzone" class="input-dropzone">
+              <label for="inputPath">File Excel input</label>
+              <input id="inputPath" type="text" readonly placeholder="Seleziona un file .xlsx" />
+              <div class="hint">Puoi anche trascinare qui un file .xlsx, .xls o .xlsm.</div>
+            </div>
+            <div>
+              <label>&nbsp;</label>
+              <button id="btnInput" class="secondary">Seleziona file</button>
+            </div>
+          </div>
+
+          <div class="row">
+            <div>
+              <label for="outputDir">Cartella output</label>
+              <input id="outputDir" type="text" placeholder="Default: stessa cartella del file input" />
+            </div>
+            <div>
+              <label>&nbsp;</label>
+              <button id="btnOutput" class="secondary">Seleziona cartella</button>
+            </div>
+          </div>
+
+          <div class="fields-3">
+            <div>
+              <label for="sheetName">Foglio Excel</label>
+              <select id="sheetName"></select>
+            </div>
+            <div>
+              <label for="capColumn">Colonna CAP</label>
+              <select id="capColumn"></select>
+            </div>
+            <div>
+              <label for="elementsColumn">Colonna Numero Elementi (1-7)</label>
+              <select id="elementsColumn"></select>
+              <div class="hint">Se impostata, peso e spessore busta vengono calcolati in automatico.</div>
+            </div>
+          </div>
+
+          <div class="fields-2" style="margin-top:10px;">
+            <div>
+              <label for="formatColumn">Colonna Formato (opzionale)</label>
+              <select id="formatColumn"></select>
+            </div>
+            <div>
+              <label for="weightColumn">Colonna Peso Unitario (opzionale)</label>
+              <select id="weightColumn"></select>
+            </div>
+          </div>
+
+          <div class="fields-3" style="margin-top:10px;">
+            <div>
+              <label for="boxHeightCm">Altezza utile scatola (cm)</label>
+              <input id="boxHeightCm" type="number" value="46" min="1" step="0.1" />
+            </div>
+            <div>
+              <label for="boxReaction">Coefficiente reazione scatola</label>
+              <input id="boxReaction" type="number" value="1" min="0.01" step="0.01" />
+              <div class="hint">Formula: floor((altezza mm x coefficiente) / spessore busta).</div>
+            </div>
+            <div>
+              <label for="boxCapacity">Limite massimo invii per scatola</label>
+              <input id="boxCapacity" type="number" value="500" min="1" />
+              <div class="hint">Cap massimo applicato oltre al calcolo automatico da spessore/peso.</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>2) Dati Etichetta Chiudi Scatola</h2>
+
+          <div class="fields-3">
+            <div>
+              <label for="postingDate">Data impostazione</label>
+              <input id="postingDate" type="date" />
+            </div>
+            <div>
+              <label for="productHomologated">Prodotto omologato</label>
+              <select id="productHomologated">
+                <option value="SI">SI</option>
+                <option value="NO">NO</option>
+              </select>
+            </div>
+            <div>
+              <label for="boxTare">Tara scatola</label>
+              <input id="boxTare" type="number" value="203" min="0" step="0.01" />
+            </div>
+          </div>
+
+          <div class="fields-2" style="margin-top:10px;">
+            <div>
+              <label for="shipper">Azienda speditrice (ID SAP + Nome)</label>
+              <input id="shipper" type="text" placeholder="Es. 12345 - Azienda XYZ" />
+            </div>
+            <div>
+              <label for="center">Centro impostazione (AGE + Nome)</label>
+              <input id="center" type="text" placeholder="Es. AGE38615 - MILANO ROSERIO" />
+            </div>
+          </div>
+
+          <div class="fields-3" style="margin-top:10px;">
+            <div>
+              <label for="shippingCode">Codice spedizione</label>
+              <input id="shippingCode" type="text" />
+            </div>
+            <div>
+              <label for="productCode">Prodotto (cod. materiale)</label>
+              <input id="productCode" type="text" />
+            </div>
+            <div>
+              <label for="defaultFormat">Formato di default</label>
+              <select id="defaultFormat">
+                <option value="">-- seleziona formato --</option>
+                <option value="P">Formato P &ndash; Resistenza a Flessione</option>
+                <option value="M">Formato M &ndash; Rigidit&agrave; a Flessione</option>
+              </select>
+              <div class="hint">Usato se colonna Formato vuota.</div>
+            </div>
+          </div>
+
+          <div class="fields-2" style="margin-top:10px;">
+            <div>
+              <label for="defaultWeight">Peso unitario di default (grammi)</label>
+              <input id="defaultWeight" type="text" placeholder="Usato se colonna Peso vuota" />
+            </div>
+            <div style="display:flex;align-items:end;">
+              <button id="btnProcess" class="primary">Elabora file</button>
+            </div>
+          </div>
+
+          <div id="status" class="status"></div>
+        </section>
+
+        <section class="card">
+          <h2>3) Risultato</h2>
+          <div id="results" class="results">Nessuna elaborazione eseguita.</div>
+          <div class="output-actions">
+            <button id="btnOpenSorted" disabled>Apri file record ordinati</button>
+            <button id="btnOpenChiudi" disabled>Apri file chiudi scatola</button>
+          </div>
+          <div class="hint">I file vengono salvati in formato .xlsx nella cartella output scelta.</div>
+        </section>
+      </div>
+    </div>
+
+    <script src="./renderer.js"></script>
+  </body>
+</html>
